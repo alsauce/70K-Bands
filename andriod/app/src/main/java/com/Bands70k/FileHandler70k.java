@@ -6,14 +6,18 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Tasks;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -157,4 +161,39 @@ public class FileHandler70k {
         }
 
     }
+
+    /*
+    private void createFileInAppFolder() {
+        final Task<DriveFolder> appFolderTask = getDriveResourceClient().getAppFolder();
+        final Task<DriveContents> createContentsTask = getDriveResourceClient().createContents();
+        Tasks.whenAll(appFolderTask, createContentsTask)
+                .continueWithTask(task -> {
+                    DriveFolder parent = appFolderTask.getResult();
+                    DriveContents contents = createContentsTask.getResult();
+                    OutputStream outputStream = contents.getOutputStream();
+                    try (Writer writer = new OutputStreamWriter(outputStream)) {
+                        writer.write("Hello World!");
+                    }
+
+                    MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
+                            .setTitle("New file")
+                            .setMimeType("text/plain")
+                            .setStarred(true)
+                            .build();
+
+                    return getDriveResourceClient().createFile(parent, changeSet, contents);
+                })
+                .addOnSuccessListener(this,
+                        driveFile -> {
+                            showMessage(getString(R.string.file_created,
+                                    driveFile.getDriveId().encodeToString()));
+                            finish();
+                        })
+                .addOnFailureListener(this, e -> {
+                    Log.e(TAG, "Unable to create file", e);
+                    showMessage(getString(R.string.file_create_error));
+                    finish();
+                });
+    }
+    */
 }
